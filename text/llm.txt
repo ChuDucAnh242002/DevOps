@@ -1,0 +1,24 @@
+LLM tool: chat GPT 4.0
+
+Motivation/reason to use LLM: I would like LLM to explain to me
+how docker works and how docker command line such as docker-compose up 
+and docker composes down works. I asked LLM to provide examples of Docker files,
+examples of how service1 connect with service2, different methods
+of getting running processes, and how to check what is shared between
+containers and the host.
+
+How and why LLM helped: LLM explains to me and helps me understand
+the concept by providing simple contexts and simple examples.
+LLM also helps me summarize which code I should consider to use,
+provides me with a starting point for me to read more documentation.
+
+Mistakes LLM did: LLM didn't actually understand the actual context
+that I faced. For example, I tried to get the ip_address, running_process,
+disk_space, and uptime but it provided code which doesn't work. 
+After trying multiple methods, I finally found which methods to
+get that information.
+
+LLM wasn't able to explain why my command (ps) wasn't recognized
+in nodejs when I tried to execute that one. Also, it can't explain
+why asynchronous code doesn't run one after another without using 
+any kind of delay method.

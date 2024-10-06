@@ -1,0 +1,4 @@
+Flask
+Flask[async]
+psutil
+requests

@@ -1,0 +1,15 @@
+Both the containers don't share any volumes or mounts with the host
+when checking with the command:
+docker inspect --format '{{ .Mount }}' <container_id>
+
+Both the containers share the same network which is devops_default
+with the host when checking with the command: 
+docker inspect --format '{{ .HostConfig.NetworkMode }}' <container_id>
+
+The service 1 container share the same python environment variables
+with the host and the service2 container share the same node
+environment variables when checking with the command:
+docker exec -it <container_id> env
+
+
+
