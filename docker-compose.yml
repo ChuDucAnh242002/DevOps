@@ -1,17 +1,30 @@
-version: '2.20.2'
+version: '3'
 
 services:
-  service1:
-    image: service1
-    container_name: service1_container
+  service1_instance1:
     build: ./service1
-    ports:
-      - "8199:8199"
-    depends_on:
-      - service2
+    container_name: service1_instance1
+  service1_instance2:
+    build: ./service1
+    container_name : service1_instance2
+  service1_instance3:
+    build: ./service1
+    container_name : service1_instance3
   service2:
     image: service2
     container_name: service2-container
     build: ./service2
-    # ports:
-    #   - "3000:3000"
+    depends_on:
+      - nginx
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8198:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./.htpasswd:/etc/nginx/.htpasswd:ro
+    depends_on:
+      - service1_instance1
+      - service1_instance2
+      - service1_instance3

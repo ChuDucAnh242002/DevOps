@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <link rel="shortcut icon" href="">
+    </head>
+    <body>
+        <h2>
+            Home
+        </h2>
+        <form action="/request" method="get">
+            <button type="submit">REQUEST</button>
+        </form>
+        <form action="/stop" method="get">
+            <button type="submit">STOP</button>
+        </form>
+        <textarea id="output" rows="10" cols="50"></textarea>
+        <script>
+            document.querySelector("form[action='/request']").onsubmit = async function(event) {
+                event.preventDefault();
+                const response = await fetch('/request', { method: 'GET'})
+                const data = await response.json()
+                const dataStr = await JSON.stringify(data)
+                document.getElementById('output').value = dataStr;
+            }   
+        </script>
+    </body>
+</html>
