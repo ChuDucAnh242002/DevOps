@@ -2,6 +2,9 @@ stages:
   - build
   - test
   - deploy
+  
+services:
+  - docker:dind
 
 variables:
   IMAGE_NAME: "docker:20.10.21"
