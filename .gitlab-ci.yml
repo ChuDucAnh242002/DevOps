@@ -6,7 +6,10 @@ stages:
 variables:
   IMAGE_NAME: "docker:20.10.21"
   REGISTRY: "registry.gitlab.com/chuducanh242002/devops-gitlab"
-  DOCKER_TAG: $REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+  DOCKER_TAG: "$REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHORT_SHA"
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $REGISTRY
 
 build:
   stage: build
