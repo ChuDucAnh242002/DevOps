@@ -17,7 +17,7 @@ build:
     - docker build -t $DOCKER_TAG .
     - docker push $DOCKER_TAG
   only:
-    - exercise4
+    - main
 
 test:
   stage: test
@@ -28,7 +28,7 @@ test:
     - curl -f http://localhost:8080 || exit 1
     - docker stop nginx-test
   only:
-    - exercise4
+    - main
 
 deploy:
   stage: deploy
@@ -38,4 +38,4 @@ deploy:
     - docker rm nginx-app || true
     - docker run -d -p 80:80 --name nginx-app $DOCKER_TAG
   only:
-    - exercise4
+    - main
