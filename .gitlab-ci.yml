@@ -33,8 +33,6 @@ build:
   stage: build
   image: docker:20.10.21
   script:
-    - echo "Checking Docker daemon logs..."
-    - docker logs $(docker ps -q --filter ancestor=docker:20.10.21-dind)
     - echo "Testing Docker daemon connection..."
     - curl -I tcp://docker:2375
     - echo "Checking the repository structure..."
