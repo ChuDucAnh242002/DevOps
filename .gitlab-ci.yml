@@ -19,6 +19,10 @@ build:
   services:
     - docker:20.10.21-dind # Docker-in-Docker service for building images
   script:
+    - echo "Checking Docker daemon logs..."
+    - docker logs $(docker ps -q --filter ancestor=docker:20.10.21-dind)
+    - echo "Testing Docker daemon connection..."
+    - curl -I tcp://docker:2375
     - echo "Checking the repository structure..."
     - ls -alh # List files in the repository to verify if docker-compose.yml is present
     - echo "Building the Docker images using docker-compose..."
