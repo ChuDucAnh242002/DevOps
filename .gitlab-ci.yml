@@ -2,23 +2,31 @@ stages:
   - build
   - test
   - deploy
-  
-# services:
-#   - docker:dind
 
-variables:
-  IMAGE_NAME: "docker:20.10.21"
-  REGISTRY: "gitlab.com/chuducanh242002/devops-gitlab"
-  DOCKER_TAG: "$REGISTRY/$IMAGE_NAME"
+# Define a global Docker image for the entire pipeline
+image: docker_image
 
-# before_script:
-#   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $REGISTRY
+# Variables to configure Docker and Docker Compose
+# variables:
+#   DOCKER_DRIVER: overlay2
+#   DOCKER_TLS_CERTDIR: "/certs"
+#   DOCKER_HOST: "tcp://docker:2375" # Use Docker-in-Docker (DinD)
 
+# Build stage: Build the Docker images for all services in docker-compose.yml
 build:
   stage: build
+  image: docker_image
+  # services:
+  #   - docker_image-dind # Docker-in-Docker service for building images
   script:
-    - docker build -t $DOCKER_TAG .
-    - docker push $DOCKER_TAG
+    - echo "Checking the repository structure..."
+    - ls -alh # List files in the repository to verify if docker-compose.yml is present
+    - echo "Building the Docker images using docker-compose..."
+    - docker-compose -f docker-compose.yml build # Explicitly reference docker-compose.yml
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - docker-compose.yml # Store docker-compose file as an artifact
   tags:
     - token1
 
