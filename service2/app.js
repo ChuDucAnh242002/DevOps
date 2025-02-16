@@ -1,8 +1,5 @@
 const express = require('express');
 const os = require('os');
-const { exec } = require('child_process');
-// const disk = require('diskusage');
-const psList = require('ps-list');
 const si = require('systeminformation');
 
 const app = express();

@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.0",
-    "ps-list": "^6.1.0",
     "systeminformation": "^4.26.0"
   }
 }
