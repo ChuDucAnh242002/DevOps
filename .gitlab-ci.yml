@@ -7,17 +7,17 @@ stages:
 image: docker:20.10.21
 
 # Variables to configure Docker and Docker Compose
-# variables:
-#   DOCKER_DRIVER: overlay2
-#   DOCKER_TLS_CERTDIR: "/certs"
-#   DOCKER_HOST: "tcp://docker:2375" # Use Docker-in-Docker (DinD)
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_HOST: "tcp://docker:2375" # Use Docker-in-Docker (DinD)
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
 build:
   stage: build
   image: docker:20.10.21
-  # services:
-  #   - docker_image-dind # Docker-in-Docker service for building images
+  services:
+    - docker_image-dind # Docker-in-Docker service for building images
   script:
     - echo "Checking the repository structure..."
     - ls -alh # List files in the repository to verify if docker-compose.yml is present
