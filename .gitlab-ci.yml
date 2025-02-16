@@ -16,8 +16,8 @@ build:
   script:
     - docker build -t $DOCKER_TAG .
     - docker push $DOCKER_TAG
-  only:
-    - main
+  tags:
+    - token1
 
 test:
   stage: test
@@ -27,8 +27,8 @@ test:
     - sleep 5
     - curl -f http://localhost:8080 || exit 1
     - docker stop nginx-test
-  only:
-    - main
+  tags:
+    - token1
 
 deploy:
   stage: deploy
@@ -37,5 +37,5 @@ deploy:
     - docker stop nginx-app || true
     - docker rm nginx-app || true
     - docker run -d -p 80:80 --name nginx-app $DOCKER_TAG
-  only:
-    - main
+  tags:
+    - token1
