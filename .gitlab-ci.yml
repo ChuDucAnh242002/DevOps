@@ -4,7 +4,7 @@ stages:
   - deploy
 
 # Define a global Docker image for the entire pipeline
-image: docker_image
+image: docker:20.10.21
 
 # Variables to configure Docker and Docker Compose
 # variables:
@@ -15,7 +15,7 @@ image: docker_image
 # Build stage: Build the Docker images for all services in docker-compose.yml
 build:
   stage: build
-  image: docker_image
+  image: docker:20.10.21
   # services:
   #   - docker_image-dind # Docker-in-Docker service for building images
   script:
