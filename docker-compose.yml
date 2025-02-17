@@ -31,7 +31,7 @@ services:
 
   tests:
     build: ./tests
-    contianer_name: tests
+    container_name: tests
     volumes:
       - ./tests:/tests
       - ./service1/src:/service1/src  # Mount service1 code
