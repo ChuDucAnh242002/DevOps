@@ -70,9 +70,6 @@ deploy:
     - echo "Checking Docker daemon connection..."
     - docker info # Test connection to the Docker daemon
 
-    - echo "Pulling the latest images..."
-    - docker-compose -f docker-compose.yml pull # Pull the latest images
-
     - echo "Starting the deployment environment..."
     - docker-compose -f docker-compose.yml up -d # Start the services in detached mode
 
