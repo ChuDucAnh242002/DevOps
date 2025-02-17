@@ -46,21 +46,29 @@ build:
 
 test:
   stage: test
+  image: docker:20.10.21
   script:
-    - docker pull $DOCKER_TAG
-    - docker run --rm -d -p 8080:80 --name nginx-test $DOCKER_TAG
-    - sleep 5
-    - curl -f http://localhost:8080 || exit 1
-    - docker stop nginx-test
+    - echo "Start the test environment"
+    - docker-compose up -d
+    - echo "Wait for services to be read"
+    - sleep 10
+    - docker-compose ps
+    - echo "Running nginx check"
+    - docker-compose exec nginx curl f http://localhost
+    - docker-compose down
+  artifacts:
+    when: always
+    paths:
+      - test-reports/ # Store test results as artifacts
   tags:
     - token1
 
 deploy:
   stage: deploy
+  image: docker:20.10.21
   script:
-    - docker pull $DOCKER_TAG
-    - docker stop nginx-app || true
-    - docker rm nginx-app || true
-    - docker run -d -p 80:80 --name nginx-app $DOCKER_TAG
+    - echo "Start the deploy environment"
+    - docker-compose up -d 
+    - project
   tags:
     - token1
