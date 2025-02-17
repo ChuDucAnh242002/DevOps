@@ -6,12 +6,6 @@ stages:
 # Define a global Docker image for the entire pipeline
 image: docker:20.10.21
 
-# Variables to configure Docker and Docker Compose
-# variables:
-#   DOCKER_DRIVER: overlay2
-#   DOCKER_TLS_CERTDIR: "/certs"
-#   DOCKER_HOST: "tcp://docker:2375" # Use Docker-in-Docker (DinD)
-
 services:
    - name: docker:20.10.21-dind
      alias: thedockerhost
@@ -26,6 +20,7 @@ variables:
 
 
 before_script:
+  - ifconfig
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
@@ -53,8 +48,8 @@ test:
     - echo "Wait for services to be read"
     - sleep 10
     - docker-compose ps
-    - echo "Running nginx check"
-    - docker-compose exec nginx curl f http://localhost
+    - echo "Running unit tests"
+    - docker-compose run --rm tests 
     - docker-compose down
   artifacts:
     when: always

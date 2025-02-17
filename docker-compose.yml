@@ -28,3 +28,16 @@ services:
       - service1_instance1
       - service1_instance2
       - service1_instance3
+
+  tests:
+    image: python3:9
+    container_name: tests
+    volumes:
+      - ./tests:/tests
+      - ./service1/src:/service1/src  # Mount service1 code
+      - ./service2/src:/service2/src  # Mount service2 code
+    working_dir: /tests
+    command: pytest
+    depends_on:
+      - service1
+      - service2
