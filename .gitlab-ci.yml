@@ -19,10 +19,6 @@ variables:
     DOCKER_TLS_CERTDIR: ""
 
 
-# before_script:
-#   - ifconfig
-#   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-
 # Build stage: Build the Docker images for all services in docker-compose.yml
 build:
   stage: build
@@ -51,10 +47,6 @@ test:
     - echo "Running unit tests"
     - docker-compose run --rm tests 
     - docker-compose down
-  artifacts:
-    when: always
-    paths:
-      - test-reports/ # Store test results as artifacts
   tags:
     - token1
 
