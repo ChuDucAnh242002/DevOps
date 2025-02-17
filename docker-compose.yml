@@ -37,5 +37,3 @@ services:
       - ./service1/app.py:/service1/app.py  # Mount service1 code
     working_dir: /tests
     command: pytest
-    depends_on:
-      - service1_instance1
