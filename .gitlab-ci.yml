@@ -67,8 +67,22 @@ deploy:
   stage: deploy
   image: docker:20.10.21
   script:
-    - echo "Start the deploy environment"
-    - docker-compose up -d 
-    - project
+    - echo "Checking Docker daemon connection..."
+    - docker info # Test connection to the Docker daemon
+
+    - echo "Pulling the latest images..."
+    - docker-compose -f docker-compose.yml pull # Pull the latest images
+
+    - echo "Starting the deployment environment..."
+    - docker-compose -f docker-compose.yml up -d # Start the services in detached mode
+
+    - echo "Checking the status of the deployed services..."
+    - docker-compose -f docker-compose.yml ps # List running services
+
+    - echo "Deployment completed successfully!"
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - docker-compose.yml # Store docker-compose file as an artifact
   tags:
     - token1
