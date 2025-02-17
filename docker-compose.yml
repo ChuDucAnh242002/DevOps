@@ -34,8 +34,7 @@ services:
     container_name: tests
     volumes:
       - ./tests:/tests
-      - ./service1/src:/service1/src  # Mount service1 code
-      - ./service2/src:/service2/src  # Mount service2 code
+      - ./service1/app.py:/service1/app.py  # Mount service1 code
     working_dir: /tests
     command: pytest
     depends_on:
