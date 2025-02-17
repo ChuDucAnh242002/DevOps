@@ -40,4 +40,3 @@ services:
     command: pytest
     depends_on:
       - service1_instance1
-      - service2_container
