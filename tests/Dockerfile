@@ -4,3 +4,5 @@ RUN pip install pytest
 RUN pip install requests
 
 COPY . .
+
+CMD ["pytest"]

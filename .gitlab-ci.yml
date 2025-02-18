@@ -40,33 +40,35 @@ test:
   image: docker:20.10.21
   script:
     - echo "Start the test environment"
-    - docker-compose up -d
+    - docker-compose up --scale tests=0 -d
     - echo "Wait for services to be read"
-    - sleep 10
+    - sleep 5
     - docker-compose ps
     - echo "Running unit tests"
     - docker-compose run --rm tests 
+    - echo "Wait for services to be read"
+    - sleep 5
     - docker-compose down
   tags:
     - token1
 
-deploy:
-  stage: deploy
-  image: docker:20.10.21
-  script:
-    - echo "Checking Docker daemon connection..."
-    - docker info # Test connection to the Docker daemon
+# deploy:
+#   stage: deploy
+#   image: docker:20.10.21
+#   script:
+#     - echo "Checking Docker daemon connection..."
+#     - docker info # Test connection to the Docker daemon
 
-    - echo "Starting the deployment environment..."
-    - docker-compose -f docker-compose.yml up -d # Start the services in detached mode
+#     - echo "Starting the deployment environment..."
+#     - docker-compose -f docker-compose.yml up -d # Start the services in detached mode
 
-    - echo "Checking the status of the deployed services..."
-    - docker-compose -f docker-compose.yml ps # List running services
+#     - echo "Checking the status of the deployed services..."
+#     - docker-compose -f docker-compose.yml ps # List running services
 
-    - echo "Deployment completed successfully!"
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - docker-compose.yml # Store docker-compose file as an artifact
-  tags:
-    - token1
+#     - echo "Deployment completed successfully!"
+#   artifacts:
+#     expire_in: 1 hour
+#     paths:
+#       - docker-compose.yml # Store docker-compose file as an artifact
+#   tags:
+#     - token1

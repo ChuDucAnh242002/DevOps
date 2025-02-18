@@ -12,10 +12,8 @@ services:
     container_name : service1_instance3
   service2:
     image: service2
-    container_name: service2-container
+    container_name: service2_container
     build: ./service2
-    depends_on:
-      - nginx
 
   nginx:
     image: nginx:latest
@@ -29,6 +27,7 @@ services:
       - service1_instance1
       - service1_instance2
       - service1_instance3
+      - service2
 
   tests:
     build: ./tests
