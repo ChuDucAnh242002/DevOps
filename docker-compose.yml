@@ -19,6 +19,7 @@ services:
 
   nginx:
     image: nginx:latest
+    container_name: nginx
     ports:
       - "8198:80"
     volumes:
@@ -34,6 +35,6 @@ services:
     container_name: tests
     volumes:
       - ./tests:/tests
-      - ./service1/app.py:/service1/app.py  # Mount service1 code
     working_dir: /tests
-    command: pytest
+    depends_on:
+      - nginx
