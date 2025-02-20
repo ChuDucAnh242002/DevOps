@@ -69,7 +69,7 @@ deploy:
     # - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP
+    - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
