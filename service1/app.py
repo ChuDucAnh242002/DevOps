@@ -74,7 +74,6 @@ def manage_state():
     if new_state != state:
         session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
         session['state'] = new_state
-        # if new_state == "SHUTDOWN":
     return new_state, 200
 
 @app.route('/run-log', methods=['GET'])
