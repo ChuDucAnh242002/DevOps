@@ -68,7 +68,7 @@ deploy:
     - echo "Host *" > ~/.ssh/config
     - echo "  IdentityFile ~/.ssh/DevOps.pem" >> ~/.ssh/config
     - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts2
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -i ~/.ssh/DevOps.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP
