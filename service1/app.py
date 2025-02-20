@@ -35,6 +35,10 @@ def get_uptime():
 @app.route('/request', methods=['GET'])
 def service_info():
 
+    state = session.get('state', "No state")
+    if state == "PAUSED":
+        return jsonify({"service 1": "PAUSED", "service 2": "PAUSED"}), 503
+
     service1_ip_address = get_ip_address()
     service1_running_process = get_running_processes()
     service1_disk_space = get_disk_space()
@@ -89,15 +93,20 @@ def home():
     if 'run_log' not in session:
         session['run_log'] = []
     if request.method == 'POST':
-        state = session['state']
+        state = session.get('state', "No state")
         new_state = "RUNNING"
         session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
-        session['state'] = "RUNNING"
+        session['state'] = new_state
 
     return render_template('home.html')
 
 @app.route('/stop', methods=['POST'])
 def stop_system():
+    state = session.get('state', "No state")
+    new_state = "STOPPED"
+    session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
+    session['state'] = new_state
+
     client = docker.from_env()
     for container in client.containers.list():
         print(container.name)

@@ -118,3 +118,9 @@ def test_paused_state():
 
     response = session.get(BASE_URL + "/request")
     assert response.status_code == 503 # Service unavailable
+    data = response.json()
+    assert 'service 1' in data
+    assert 'service 2' in data
+
+    assert data['service 1'] == "PAUSED"
+    assert data['service 2'] == "PAUSED"
