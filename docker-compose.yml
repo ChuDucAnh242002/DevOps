@@ -4,16 +4,26 @@ services:
   service1_instance1:
     build: ./service1
     container_name: service1_instance1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   service1_instance2:
     build: ./service1
     container_name : service1_instance2
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   service1_instance3:
     build: ./service1
     container_name : service1_instance3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   service2:
+    build: ./service2
     image: service2
     container_name: service2_container
-    build: ./service2
+    depends_on:
+      - service1_instance1
+      - service1_instance2
+      - service1_instance3
 
   nginx:
     image: nginx:latest
@@ -24,9 +34,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./.htpasswd:/etc/nginx/.htpasswd:ro
     depends_on:
-      - service1_instance1
-      - service1_instance2
-      - service1_instance3
       - service2
 
   tests:
@@ -34,6 +41,6 @@ services:
     container_name: tests
     volumes:
       - ./tests:/tests
-    working_dir: /tests
-    depends_on:
-      - nginx
+      - /var/run/docker.sock:/var/run/docker.sock
+    # depends_on:
+    #   - nginx

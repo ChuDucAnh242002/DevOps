@@ -60,10 +60,6 @@ def service_info():
 
     return jsonify(info)
 
-@app.route('/login')
-def login():
-    return render_template('login.html')
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
@@ -72,9 +68,9 @@ def home():
 def stop_system():
     client = docker.from_env()
     for container in client.containers.list():
-        container.stop()
-
-    return "System shutting down."
-
+        print(container.name)
+        if "devops-tests" not in container.image.tags:
+            container.stop()
+        
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

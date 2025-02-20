@@ -1,8 +1,9 @@
 FROM python:3.8.10-slim
 
-RUN pip install pytest
-RUN pip install requests
+WORKDIR /tests
 
 COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 CMD ["pytest"]
