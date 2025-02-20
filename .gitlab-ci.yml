@@ -61,13 +61,15 @@ deploy:
   before_script:
     - echo "Setting up SSH..."
     - apk update && apk add openssh-client
-    # - mkdir -p ~/.ssh
-    # - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    # - chmod 600 ~/.ssh/id_rsa
+    - apk add --no-cache openssh
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
     # - echo "Host *" > ~/.ssh/config
     # - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP "docker-compose up --scale tests=0 -d"
+    - ssh -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP
+    - cd .. && ls
   tags:
     - token1
