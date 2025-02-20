@@ -59,16 +59,24 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-    - echo "Setting up SSH..."
-    - apk update && apk add openssh-client
-    - apk add --no-cache openssh
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/DevOps.pem
-    - chmod 600 ~/.ssh/DevOps.pem
-    - echo "Host *" > ~/.ssh/config
-    - echo "  IdentityFile ~/.ssh/DevOps.pem" >> ~/.ssh/config
-    - echo "Fetching server host key..."
-    - ssh-keyscan -t rsa "$SERVER_IP" >> ~/.ssh/known_hosts  # Add host key to known_hosts
+    - touch ~/.ssh/config
+    - touch ~/.ssh/known_hosts
+    - chmod -R 400 ~/.ssh
+    
+    # - echo "Setting up SSH..."
+    # - apk update && apk add openssh-client
+    # - apk add --no-cache openssh
+    # - mkdir -p ~/.ssh
+    # - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/DevOps.pem
+    # - chmod 600 ~/.ssh/DevOps.pem
+    # - echo "Host *" > ~/.ssh/config
+    # - echo "  IdentityFile ~/.ssh/DevOps.pem" >> ~/.ssh/config
+    # - echo "Fetching server host key..."
+    # - ssh-keyscan -t rsa "$SERVER_IP" >> ~/.ssh/known_hosts  # Add host key to known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP
