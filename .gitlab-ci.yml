@@ -18,8 +18,8 @@ variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     IMAGE_NAME: "Ubuntu-22.04"
-    SSH_USER: "ubuntu"
-    SSH_HOST: "195.148.21.49"
+    SERVER_USER: "ubuntu"
+    SERVER_IP: "195.148.21.49"
 
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
@@ -57,20 +57,10 @@ test:
 
 deploy:
   stage: deploy
-  image: docker:20.10.21
-  before_script:
-    - echo "Setting up SSH..."
-    - apt-get update && apt-get install -y openssh-client
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - echo "Host *" > ~/.ssh/config
-    - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+  image: alpine:latest
   script:
-    - echo "Deploying to cPouta virtual machine..."
-    - ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
-        docker login -u '$CI_REGISTRY_USER' -p '$CI_REGISTRY_PASSWORD' '$CI_REGISTRY' &&
-        docker-compose up --scale tests=0 -d
-      "
+    - chmod og= $SSH_PRIVATE_KEY
+    - apk update && apk add openssh-client
+    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker-compose up --scale tests=0 -d"
   tags:
     - token1
