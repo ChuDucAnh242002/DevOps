@@ -111,6 +111,7 @@ def test_get_run_log():
 def test_paused_state():
     url = BASE_URL + "/state"
     session = requests.Session()
+    response = session.post(BASE_URL)
     response = session.put(url, data="PAUSED")
 
     assert response.status_code == 200
