@@ -63,7 +63,7 @@ deploy:
     - apk update && apk add openssh-client
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/DevOps.pem
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/DevOps.pem
     - chmod 600 ~/.ssh/DevOps.pem
     - echo "Host *" > ~/.ssh/config
     - echo "  IdentityFile ~/.ssh/DevOps.pem" >> ~/.ssh/config
