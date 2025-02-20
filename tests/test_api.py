@@ -3,13 +3,11 @@ import requests
 import docker
 import time
 
-BASE_URL = "http://nginx:80"
-USERNAME = "user1"
-PASSWORD = "123456"
+BASE_URL = "http://nginx:8197"
 
 def test_service_info():
     url = BASE_URL + "/request"
-    response = requests.get(url, auth=(USERNAME, PASSWORD))
+    response = requests.get(url)
 
     assert response.status_code == 200
 
@@ -41,13 +39,17 @@ def test_service_info():
 
 def test_home():
     url = BASE_URL
-    response = requests.get(url, auth=(USERNAME, PASSWORD))
+    response = requests.get(url)
 
     assert response.status_code == 200
     assert "Home" in response.text
     assert "<form action=\"/request\" method=\"get\">" in response.text
     assert "<form action=\"/stop\" method=\"get\">" in response.text
     assert "<textarea id=\"output\" rows=\"10\" cols=\"50\"></textarea>" in response.text
+
+# def test_put_state():
+#     url = BASE_URL + "/state"
+#     headers = {'Content-Type': 'text/plain'}
 
 # def test_stop_system():
 #     client = docker.from_env()
