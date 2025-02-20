@@ -1,5 +1,4 @@
 Flask
-Flask[async]
 psutil
 requests
 docker

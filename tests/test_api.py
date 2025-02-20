@@ -39,25 +39,37 @@ def test_service_info():
 
 def test_home():
     url = BASE_URL
-    response = requests.get(url)
+    response = requests.post(url)
 
     assert response.status_code == 200
     assert "Home" in response.text
     assert "<form action=\"/request\" method=\"get\">" in response.text
-    assert "<form action=\"/stop\" method=\"get\">" in response.text
+    assert "<form action=\"/stop\" method=\"post\">" in response.text
     assert "<textarea id=\"output\" rows=\"10\" cols=\"50\"></textarea>" in response.text
 
-def test_put_state():
+def test_get_state():
     url = BASE_URL + "/state"
-    headers = {'Content-Type': 'text/plain'}
+    session = requests.Session()
+
+    response = session.post(BASE_URL)
+    assert response.status_code == 200
+
+    response = session.get(url)
+
+    assert response.status_code == 200
+    assert response.text == "RUNNING"
+
+def test_manage_state():
+    url = BASE_URL + "/state"
+    requests.get(BASE_URL)
 
     # test INIT state
-    response = requests.put(url, data="INIT", headers=headers)
+    response = requests.put(url, data="INIT")
     assert response.status_code == 200
     assert response.text == "INIT"
 
     # test RUNNING state
-    response = requests.put(url, data="RUNNING", headers=headers)
+    response = requests.put(url, data="RUNNING")
     assert response.status_code == 200
     assert response.text == "RUNNING"
 
@@ -83,16 +95,8 @@ def test_put_state():
     assert response.status_code == 200
     assert response.text == "SHUTDOWN"
 
-
-def test_get_state():
-    url = BASE_URL + "/state"
-    response = requests.get(url)
-
-    assert response.status_code == 200
-    assert response.text in ["INIT", "PAUSED", "RUNNING", "SHUTDOWN"]
-
-def test_run_log():
-    url = BASE_URL + "/run"
+def test_get_run_log():
+    url = BASE_URL + "/run-log"
     response = requests.get(url)
 
     assert response.status_code == 200
