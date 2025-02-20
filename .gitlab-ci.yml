@@ -68,6 +68,6 @@ deploy:
     # - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -i $SSH_PRIVATE_KEY -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker-compose up --scale tests=0 -d"
+    - ssh -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP "docker-compose up --scale tests=0 -d"
   tags:
     - token1
