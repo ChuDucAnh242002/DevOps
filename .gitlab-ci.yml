@@ -63,14 +63,14 @@ deploy:
     - apk update && apk add openssh-client
     - apk add --no-cache openssh
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/DevOps.pem
+    - chmod 600 ~/.ssh/DevOps.pem
     # - echo "Host *" > ~/.ssh/config
     # - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP
+    - ssh -i ~/.ssh/DevOps.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
