@@ -57,51 +57,56 @@ def test_get_state():
     response = session.get(url)
 
     assert response.status_code == 200
+    assert response.headers['Content-Type'] == 'text/plain'
     assert response.text == "RUNNING"
 
 def test_manage_state():
     url = BASE_URL + "/state"
-    requests.get(BASE_URL)
+    session = requests.Session()
+    response = session.post(BASE_URL)
 
     # test INIT state
-    response = requests.put(url, data="INIT")
+    response = session.put(url, data="INIT")
     assert response.status_code == 200
     assert response.text == "INIT"
 
     # test RUNNING state
-    response = requests.put(url, data="RUNNING")
+    response = session.put(url, data="RUNNING")
     assert response.status_code == 200
     assert response.text == "RUNNING"
 
-    response = requests.put(url)
+    response = session.get(url)
     assert response.status_code == 200
     assert response.text == "RUNNING"
 
     # test PAUSED state
-    response = requests.put(url, data="PAUSED", headers=headers)
+    response = session.put(url, data="PAUSED")
     assert response.status_code == 200
     assert response.text == "PAUSED"
 
-    response = requests.put(url)
+    response = session.get(url)
     assert response.status_code == 200
     assert response.text == "PAUSED"
 
     # test SHUTDOWN state
-    response = requests.put(url, data="SHUTDOWN", headers=headers)
+    response = session.put(url, data="SHUTDOWN")
     assert response.status_code == 200
     assert response.text == "SHUTDOWN"
 
-    response = requests.put(url)
+    response = session.get(url)
     assert response.status_code == 200
     assert response.text == "SHUTDOWN"
 
 def test_get_run_log():
     url = BASE_URL + "/run-log"
-    response = requests.get(url)
+    session = requests.Session()
+    response = session.post(BASE_URL)
+    assert response.status_code == 200
 
+    response = session.get(url)
     assert response.status_code == 200
     assert response.headers['Content-Type'] == 'text/plain'
-    assert ("INIT->RUNNING" in response.text) or ("RUNNING->PAUSED" in response.text) or ("PAUSED->RUNNING" in response.text)
+    assert ("INIT->RUNNING" in response.text)
 
 # def test_stop_system():
 #     client = docker.from_env()

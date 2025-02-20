@@ -62,41 +62,38 @@ def service_info():
 
     return jsonify(info)
 
-# @app.route('/state', methods=['PUT', 'GET'])
-# def manage_state():
-    # global state
-    # if request.headers.get('X-API-Gateway') != 'true':
-    #     return "Unauthorized", 403
-
-    # if request.method == 'PUT':
-    #     new_state = request.data.decode('utf-8')
-    #     if new_state != state:
-    #         run_log.append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
-    #         state = new_state
-            # if new_state == "SHUTDOWN":
-        # return "State updated", 200
-
 @app.route('/state', methods=['GET'])
 def get_state():
     state = session.get('state', "No state")
-    return state, 200
+    return state, 200, {'Content-Type': 'text/plain'}
 
-# @app.route('/run-log', methods=['GET'])
-# def get_run_log():
-    # if request.headers.get('X-API-Gateway') != 'true':
-    #     return "Unauthorized", 403
-    # run_log = ["INIT->RUNNING"]
-    # return run-log, 200
+@app.route('/state', methods=['PUT'])
+def manage_state():
+    state = session.get('state', "No state")
+    new_state = request.data.decode('utf-8')
+    if new_state != state:
+        session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
+        session['state'] = new_state
+        # if new_state == "SHUTDOWN":
+    return new_state, 200
 
-    # return "\n".join(run_log), 200
+@app.route('/run-log', methods=['GET'])
+def get_run_log():
+    run_log = session.get('run_log',
+        ["No log"])
+    return "".join(run_log), 200, {'Content-Type': 'text/plain'}
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if 'state' not in session:
         session['state'] = "INIT"
+    if 'run_log' not in session:
+        session['run_log'] = []
     if request.method == 'POST':
-        if session['state'] == "INIT":
-            session['state'] = "RUNNING"
+        state = session['state']
+        new_state = "RUNNING"
+        session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
+        session['state'] = "RUNNING"
 
     return render_template('home.html')
 
