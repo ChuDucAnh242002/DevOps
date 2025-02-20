@@ -47,9 +47,57 @@ def test_home():
     assert "<form action=\"/stop\" method=\"get\">" in response.text
     assert "<textarea id=\"output\" rows=\"10\" cols=\"50\"></textarea>" in response.text
 
-# def test_put_state():
-#     url = BASE_URL + "/state"
-#     headers = {'Content-Type': 'text/plain'}
+def test_put_state():
+    url = BASE_URL + "/state"
+    headers = {'Content-Type': 'text/plain'}
+
+    # test INIT state
+    response = requests.put(url, data="INIT", headers=headers)
+    assert response.status_code == 200
+    assert response.text == "INIT"
+
+    # test RUNNING state
+    response = requests.put(url, data="RUNNING", headers=headers)
+    assert response.status_code == 200
+    assert response.text == "RUNNING"
+
+    response = requests.put(url)
+    assert response.status_code == 200
+    assert response.text == "RUNNING"
+
+    # test PAUSED state
+    response = requests.put(url, data="PAUSED", headers=headers)
+    assert response.status_code == 200
+    assert response.text == "PAUSED"
+
+    response = requests.put(url)
+    assert response.status_code == 200
+    assert response.text == "PAUSED"
+
+    # test SHUTDOWN state
+    response = requests.put(url, data="SHUTDOWN", headers=headers)
+    assert response.status_code == 200
+    assert response.text == "SHUTDOWN"
+
+    response = requests.put(url)
+    assert response.status_code == 200
+    assert response.text == "SHUTDOWN"
+
+
+def test_get_state():
+    url = BASE_URL + "/state"
+    response = requests.get(url)
+
+    assert response.status_code == 200
+    assert response.text in ["INIT", "PAUSED", "RUNNING", "SHUTDOWN"]
+
+def test_run_log():
+    url = BASE_URL + "/run"
+    response = requests.get(url)
+
+    assert response.status_code == 200
+    assert response.headers['Content-Type'] == 'text/plain'
+    assert ("INIT->RUNNING" in response.text) or ("RUNNING->PAUSED" in response.text) or ("PAUSED->RUNNING" in response.text)
 
 # def test_stop_system():
 #     client = docker.from_env()
