@@ -60,7 +60,7 @@ deploy:
   image: docker:20.10.21
   before_script:
     - echo "Setting up SSH..."
-    - apt-get update && apt-get install -y openssh-client
+    - apk add --no-cache openssh
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
