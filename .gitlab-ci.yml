@@ -60,7 +60,7 @@ deploy:
   image: docker:20.10.21
   before_script:
     - echo "Setting up SSH..."
-    - apk add --no-cache openssh
+    - apt-get update && apt-get install -y openssh-client
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
@@ -69,6 +69,7 @@ deploy:
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+        docker login -u '$CI_REGISTRY_USER' -p '$CI_REGISTRY_PASSWORD' '$CI_REGISTRY' &&
         docker-compose up --scale tests=0 -d
       "
   tags:
