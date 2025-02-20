@@ -66,7 +66,8 @@ deploy:
     - touch ~/.ssh/config
     - touch ~/.ssh/known_hosts
     - chmod -R 400 ~/.ssh
-    
+
+
     # - echo "Setting up SSH..."
     # - apk update && apk add openssh-client
     # - apk add --no-cache openssh
@@ -79,7 +80,7 @@ deploy:
     # - ssh-keyscan -t rsa "$SERVER_IP" >> ~/.ssh/known_hosts  # Add host key to known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -v -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP
+    - ssh -v -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
