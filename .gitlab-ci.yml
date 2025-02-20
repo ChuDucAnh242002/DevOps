@@ -17,6 +17,9 @@ variables:
     # Use the overlayfs driver for improved performance:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
+    IMAGE_NAME: "Ubuntu-22.04"
+    SSH_USER: "ubuntu"
+    SSH_HOST: "195.148.21.49"
 
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
@@ -52,23 +55,21 @@ test:
   tags:
     - token1
 
-# deploy:
-#   stage: deploy
-#   image: docker:20.10.21
-#   script:
-#     - echo "Checking Docker daemon connection..."
-#     - docker info # Test connection to the Docker daemon
-
-#     - echo "Starting the deployment environment..."
-#     - docker-compose -f docker-compose.yml up -d # Start the services in detached mode
-
-#     - echo "Checking the status of the deployed services..."
-#     - docker-compose -f docker-compose.yml ps # List running services
-
-#     - echo "Deployment completed successfully!"
-#   artifacts:
-#     expire_in: 1 hour
-#     paths:
-#       - docker-compose.yml # Store docker-compose file as an artifact
-#   tags:
-#     - token1
+deploy:
+  stage: deploy
+  image: docker:20.10.21
+  before_script:
+    - echo "Setting up SSH..."
+    - apt-get update && apt-get install -y openssh-client
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo "Host *" > ~/.ssh/config
+    - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+  script:
+    - echo "Deploying to cPouta virtual machine..."
+    - ssh -o StrictHostKeyChecking=no "$SSH_USER@$SSH_HOST" "
+        docker-compose up --scale tests=0 -d
+      "
+  tags:
+    - token1
