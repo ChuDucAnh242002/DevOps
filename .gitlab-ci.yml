@@ -67,9 +67,10 @@ deploy:
     - chmod 600 ~/.ssh/id_rsa
     # - echo "Host *" > ~/.ssh/config
     # - echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP
+    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
