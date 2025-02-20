@@ -108,14 +108,13 @@ def test_get_run_log():
     assert response.headers['Content-Type'] == 'text/plain'
     assert ("INIT->RUNNING" in response.text)
 
-# def test_stop_system():
-#     client = docker.from_env()
+def test_paused_state():
+    url = BASE_URL + "/state"
+    session = requests.Session()
+    response = session.put(url, data="PAUSED")
 
-#     url = BASE_URL + "/stop"
-#     response = requests.get(url, auth=(USERNAME, PASSWORD))
-#     assert response.status_code == 200  
-    # time.sleep(60)
+    assert response.status_code == 200
+    assert response.text == "PAUSED"
 
-    # container_list = client.containers.list()
-    
-    # assert len(container_list) == 1
+    response = session.get(BASE_URL + "/request")
+    assert response.status_code == 503 # Service unavailable
