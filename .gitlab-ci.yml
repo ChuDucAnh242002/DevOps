@@ -61,7 +61,7 @@ deploy:
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apk update && apk add openssh-client )'
     - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add ~/.ssh/DevOps.pem
     - mkdir -p ~/.ssh
     - touch ~/.ssh/config
     - touch ~/.ssh/known_hosts
@@ -79,7 +79,7 @@ deploy:
     # - ssh-keyscan -t rsa "$SERVER_IP" >> ~/.ssh/known_hosts  # Add host key to known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -v -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP
+    - ssh -v -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
