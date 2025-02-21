@@ -23,24 +23,24 @@ variables:
 
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
-build:
-  stage: build
-  image: docker:20.10.21
-  script:
-    - echo "Checking the repository structure..."
-    - ls -alh # List files in the repository to verify if docker-compose.yml is present
-    - echo "Building the Docker images using docker-compose..."
-    - docker-compose build # Explicitly reference docker-compose.yml
-    - echo "Logging in to Docker registry..."
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-    - echo "Pushing Docker images to registry..."
-    - docker-compose push
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - docker-compose.yml # Store docker-compose file as an artifact
-  tags:
-    - token1
+# build:
+#   stage: build
+#   image: docker:20.10.21
+#   script:
+#     - echo "Checking the repository structure..."
+#     - ls -alh # List files in the repository to verify if docker-compose.yml is present
+#     - echo "Building the Docker images using docker-compose..."
+#     - docker-compose build # Explicitly reference docker-compose.yml
+#     - echo "Logging in to Docker registry..."
+#     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+#     - echo "Pushing Docker images to registry..."
+#     - docker-compose push
+#   artifacts:
+#     expire_in: 1 hour
+#     paths:
+#       - docker-compose.yml # Store docker-compose file as an artifact
+#   tags:
+#     - token1
 
 # test:
 #   stage: test
@@ -73,10 +73,10 @@ deploy:
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "
-        docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
         cd /hom/ubuntu/DevOps &&
-        docker-compose pull &&
         docker-compose up -d"
+        # docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+        # docker-compose pull &&
 
   tags:
     - token1
