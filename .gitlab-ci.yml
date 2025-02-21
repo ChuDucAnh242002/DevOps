@@ -62,7 +62,7 @@ deploy:
     - 'command -v ssh-agent >/dev/null || ( apk update && apk add openssh-client )'
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | ~/.ssh/id_rsa
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 400 ~/.ssh/id_rsa
     # - chmod 600 ~/.ssh/id_rsa
     - echo "Verifying file creation and permissions..."
