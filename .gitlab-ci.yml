@@ -23,20 +23,20 @@ variables:
 
 
 # Build stage: Build the Docker images for all services in docker-compose.yml
-# build:
-#   stage: build
-#   image: docker:20.10.21
-#   script:
-#     - echo "Checking the repository structure..."
-#     - ls -alh # List files in the repository to verify if docker-compose.yml is present
-#     - echo "Building the Docker images using docker-compose..."
-#     - docker-compose build # Explicitly reference docker-compose.yml
-#   artifacts:
-#     expire_in: 1 hour
-#     paths:
-#       - docker-compose.yml # Store docker-compose file as an artifact
-#   tags:
-#     - token1
+build:
+  stage: build
+  image: docker:20.10.21
+  script:
+    - echo "Checking the repository structure..."
+    - ls -alh # List files in the repository to verify if docker-compose.yml is present
+    - echo "Building the Docker images using docker-compose..."
+    - docker-compose build # Explicitly reference docker-compose.yml
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - docker-compose.yml # Store docker-compose file as an artifact
+  tags:
+    - token1
 
 # test:
 #   stage: test
@@ -68,7 +68,8 @@ deploy:
 
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "cd .. && ls"
+    - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "
+        "
 
   tags:
     - token1
