@@ -61,13 +61,14 @@ deploy:
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apk update && apk add openssh-client )'
     # - eval $(ssh-agent -s)
-    # - echo "$SSH_PRIVATE_KEY" > ~/.ssh/DevOps.pem
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 400 ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - echo -e "Host gitlab.com\n\tStrictHostKeyChecking no" > ~/.ssh/config
     # - mkdir -p ~/.ssh
     # - touch ~/.ssh/config
     # - touch ~/.ssh/known_hosts
     # - chmod -R 400 ~/.ssh
-    - chmod 400 $SSH_PRIVATE_KEY
-    - chmod 600 $SSH_PRIVATE_KEY
 
     # - echo "Setting up SSH..."
     # - apk update && apk add openssh-client
@@ -82,7 +83,7 @@ deploy:
   script:
     - echo "Deploying to cPouta virtual machine..."
     # - cat ~/.ssh/DevOps.pem
-    - ssh -v -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP
+    - ssh -v -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
