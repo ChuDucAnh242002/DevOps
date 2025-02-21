@@ -73,6 +73,10 @@ def get_state():
 
 @app.route('/state', methods=['PUT'])
 def manage_state():
+    if 'state' not in session:
+        session['state'] = "INIT"
+    if 'run_log' not in session:
+        session['run_log'] = []
     state = session.get('state', "No state")
     new_state = request.data.decode('utf-8')
     if new_state != state and new_state != "No state":
