@@ -59,22 +59,18 @@ deploy:
   stage: deploy
   image: alpine:latest
   before_script:
-  
     - command -v ssh-agent >/dev/null || ( apk update && apk add openssh-client )
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > /home/DevOps.pem
     - mv /home/DevOps.pem ~/.ssh/DevOps.pem
     - chmod 400 ~/.ssh/DevOps.pem
-    - cat ~/.ssh/DevOps.pem
-    # - echo "SSH key added to agent."
-    # - echo -e "Host gitlab.com\n\tStrictHostKeyChecking no" > ~/.ssh/config
-    # - ls -l ~/.ssh
-    # - cat ~/.ssh/config
 
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP
-    - cd .. && ls
+    - docker-compose build
+    - docker-compose down
+    - docker-compose up --scale test=0 -d
   tags:
     - token1
