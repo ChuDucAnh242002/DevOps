@@ -75,7 +75,7 @@ def get_state():
 def manage_state():
     state = session.get('state', "No state")
     new_state = request.data.decode('utf-8')
-    if new_state != state:
+    if new_state != state and new_state != "No state":
         session['run_log'].append(f"{time.strftime('%Y-%m-%dT%H:%M:%S')}Z: {state}->{new_state}")
         session['state'] = new_state
     return new_state, 200
