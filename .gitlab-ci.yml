@@ -67,7 +67,6 @@ deploy:
     - touch ~/.ssh/known_hosts
     - chmod -R 400 ~/.ssh
 
-
     # - echo "Setting up SSH..."
     # - apk update && apk add openssh-client
     # - apk add --no-cache openssh
