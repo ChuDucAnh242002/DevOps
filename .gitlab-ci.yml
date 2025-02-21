@@ -73,7 +73,7 @@ deploy:
   script:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "
-        cd /hom/ubuntu/DevOps &&
+        cd /home/ubuntu/DevOps &&
         docker-compose up -d"
         # docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
         # docker-compose pull &&
