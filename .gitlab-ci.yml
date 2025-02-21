@@ -30,7 +30,7 @@ build:
     - echo "Checking the repository structure..."
     - ls -alh # List files in the repository to verify if docker-compose.yml is present
     - echo "Building the Docker images using docker-compose..."
-    - docker-compose -f docker-compose.yml build # Explicitly reference docker-compose.yml
+    - docker-compose build # Explicitly reference docker-compose.yml
   artifacts:
     expire_in: 1 hour
     paths:
@@ -60,12 +60,14 @@ deploy:
   image: alpine:latest
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apk update && apk add openssh-client )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/DevOps.pem
-    - mkdir -p ~/.ssh
-    - touch ~/.ssh/config
-    - touch ~/.ssh/known_hosts
-    - chmod -R 400 ~/.ssh
+    # - eval $(ssh-agent -s)
+    # - echo "$SSH_PRIVATE_KEY" > ~/.ssh/DevOps.pem
+    # - mkdir -p ~/.ssh
+    # - touch ~/.ssh/config
+    # - touch ~/.ssh/known_hosts
+    # - chmod -R 400 ~/.ssh
+    - chmod 400 $SSH_PRIVATE_KEY
+    - chmod 600 $SSH_PRIVATE_KEY
 
     # - echo "Setting up SSH..."
     # - apk update && apk add openssh-client
@@ -79,7 +81,8 @@ deploy:
     # - ssh-keyscan -t rsa "$SERVER_IP" >> ~/.ssh/known_hosts  # Add host key to known_hosts
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -v -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP
+    # - cat ~/.ssh/DevOps.pem
+    - ssh -v -i $SSH_PRIVATE_KEY $SERVER_USER@$SERVER_IP
     - cd .. && ls
   tags:
     - token1
