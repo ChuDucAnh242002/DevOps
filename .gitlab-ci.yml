@@ -68,7 +68,7 @@ deploy:
 
   script:
     - echo "Deploying to cPouta virtual machine..."
-    - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "ls"
+    - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "cd .. && ls"
 
   tags:
     - token1
