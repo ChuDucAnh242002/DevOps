@@ -69,7 +69,7 @@ deploy:
     - echo "Deploying to cPouta virtual machine..."
     - ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/DevOps.pem $SERVER_USER@$SERVER_IP "
         cd /home/ubuntu/DevOps &&
-        docker-compose up -d"
+        docker compose up --scale tests=0 -d"
 
   tags:
     - token1
