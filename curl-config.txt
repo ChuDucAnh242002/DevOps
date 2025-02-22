@@ -1,0 +1,5 @@
+# Save cookies to this file
+cookie-jar = "cookies.txt"
+
+# Send cookies from this file
+cookie = "cookies.txt"
