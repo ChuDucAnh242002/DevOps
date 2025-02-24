@@ -6,22 +6,16 @@ services:
     container_name: service1_instance1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - 195.148.21.49=0.0.0.0
   service1_instance2:
     build: ./service1
     container_name : service1_instance2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - 195.148.21.49=0.0.0.0
   service1_instance3:
     build: ./service1
     container_name : service1_instance3
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - 195.148.21.49=0.0.0.0
   service2:
     build: ./service2
     image: service2
@@ -30,8 +24,6 @@ services:
       - service1_instance1
       - service1_instance2
       - service1_instance3
-    environment:
-      - 195.148.21.49=0.0.0.0
 
   nginx:
     image: nginx:latest
