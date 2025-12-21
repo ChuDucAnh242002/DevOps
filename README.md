@@ -78,11 +78,26 @@ deploy locally within the server.
 
 !["First success build"](./img/first_build.png "First success build")
 
+Image 1: First success build
+
+---
+
 !["First success tests"](./img/first_test.png "First success tests")
+
+Image 2: First success tests
+
+---
 
 !["First deployment local"](./img/first_deployment_local.png "First deployment local")
 
+Image 3: First deployment local
+
+
 !["First deployment Cloud 1"](./img/first_deployment_cloud_1.png "First deployment Cloud 1")
 
+Image 4: First deployment Cloud 1
+
 !["First deployment Cloud 2"](./img/first_deployment_cloud_2.png "First deployment Cloud 2")
+
+Image 5: First deployment Cloud 2
 
