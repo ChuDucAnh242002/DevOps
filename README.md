@@ -76,13 +76,13 @@ deploy locally within the server.
 
 ## Runs of pipeline
 
-!["First success build"](./img/first_build.png)
+!["First success build"](./img/first_build.png "First success build")
 
-!["First success test"](./img/first_test.png)
+!["First success tests"](./img/first_test.png "First success tests")
 
-!["First deployment local"](./img/first_deployment_local.png)
+!["First deployment local"](./img/first_deployment_local.png "First deployment local")
 
-!["First deployment Cloud 1"](./img/first_deployment_cloud_1.png)
+!["First deployment Cloud 1"](./img/first_deployment_cloud_1.png "First deployment Cloud 1")
 
-!["First deployment Cloud 2"](./img/first_deployment_cloud_2.png)
+!["First deployment Cloud 2"](./img/first_deployment_cloud_2.png "First deployment Cloud 2")
 
