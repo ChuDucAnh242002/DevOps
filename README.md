@@ -92,10 +92,14 @@ Image 2: First success tests
 
 Image 3: First deployment local
 
+---
+
 
 !["First deployment Cloud 1"](./img/first_deployment_cloud_1.png "First deployment Cloud 1")
 
 Image 4: First deployment Cloud 1
+
+---
 
 !["First deployment Cloud 2"](./img/first_deployment_cloud_2.png "First deployment Cloud 2")
 
